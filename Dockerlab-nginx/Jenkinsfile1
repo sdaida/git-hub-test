@@ -12,14 +12,11 @@ environment {
       }
 
   stages {
-    stage("Build image") {
-        steps {
-        sh 'docker build -f /var/lib/jenkins/workspace/Docker_nginx_excercise/Jenkinsfile1 -t daidasunny/dockerlab:$Docker_tag .'
-        }
-    }
     
     stage('Push Image to Dockerhub') {
         steps {
+        script {
+             sh 'docker build -f /var/lib/jenkins/workspace/Docker_nginx_excercise/Dockerlab-nginx/Jenkinsfile1 -t daidasunny/dockerlab:$Docker_tag .'
              withCredentials([string(credentialsId: 'daidasunny', variable: 'dockerhub_credential')]) {
     
             sh 'docker login -u daidasunny -p $dockerhub_credential'
@@ -27,7 +24,7 @@ environment {
             }
         }
     }
-    
+    }
     
   }
 }
